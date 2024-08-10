@@ -1,5 +1,3 @@
-# <u>WORK IN PROGRESS</u>
-
 # Explosive.ws to Godot Workflow
 
 Scripts and skeleton resources to create a ***mostly automated*** explosive.ws to blender to godot workflow. You can buy or download the animations from the Explosive link below.
