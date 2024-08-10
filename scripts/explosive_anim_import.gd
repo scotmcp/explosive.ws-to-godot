@@ -14,16 +14,16 @@ extends EditorScenePostImport
 
 
 
-# ratio difference of leg length different between explosive.ws animation rigs and standard humanoid rigs.
-var keyframe_mod_ratio : float = 0.12
+## ratio difference of leg length different between explosive.ws animation rigs and standard humanoid rigs.
+## This ratio should be 0.115, but feel free to test and adjust as needed.
+var keyframe_mod_ratio : float = 0.115
 
 var animation_player : AnimationPlayer
 var animation : Animation
 
 
 
-# This sample changes all node names.
-# Called right after the scene is imported and gets the root node.
+## Called right after the scene is imported and gets the root node and iterates through each animation in the library
 func _post_import(scene):
 	# Collection all animations into an array
 	
@@ -40,7 +40,7 @@ func iterate(animation, anim_name):
 	#print(animation)
 			
 
-# Adjust the Hip bone placement so that it lines up with the Hip Bone on standard humanoid rigs.
+## Adjust the Hip bone placement so that it lines up with the Hip Bone on standard humanoid rigs.
 func adjust_keyframes(animation: Animation, anim_name) -> void:
 	var track_index
 	#track_index = animation.find_track("Armature/Skeleton3D:B_Pelvis", Animation.TYPE_POSITION_3D)
@@ -54,12 +54,13 @@ func adjust_keyframes(animation: Animation, anim_name) -> void:
 	for i in range(keyframe_count):
 		var keyframe_time = animation.track_get_key_time(track_index, i)
 		var keyframe_value = animation.track_get_key_value(track_index, i)
-		if anim_name == "RelaxIdle":
-			print("Original Keyframe Value: " + str(keyframe_value))
-			var keyframe_mod : float = keyframe_value.y * keyframe_mod_ratio
-			keyframe_value.y -= keyframe_mod
-			animation.track_set_key_value(track_index, i, keyframe_value)
-			print("Modified Keyframe Value: " + str(keyframe_value))
+		#if anim_name == "RelaxIdle":
+			#print("Original Keyframe Value: " + str(keyframe_value))
+		var keyframe_mod : float = keyframe_value.y * keyframe_mod_ratio
+		keyframe_value.y -= keyframe_mod
+		animation.track_set_key_value(track_index, i, keyframe_value)
+			#print("Modified Keyframe Value: " + str(keyframe_value))
 			
 			
 			
+
