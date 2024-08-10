@@ -13,6 +13,8 @@ Scripts and skeleton resources to create a ***mostly automated*** explosive.ws t
     <img src="logos/logo_outlined.svg" width="200" alt="Godot Engine logo"></a>
 
 </p>
+Including positional fixes for <a href="https://syntystore.com/">
+    <img src="logos/logo-synty-square.svg" width="50" alt="Synty"></a> characters.
 
 You can also see a video walk-through of the process here: (**insert youtube link here**)
 
@@ -52,9 +54,7 @@ The python script has been tested with blender 3.6 thru 4.2.
 
 # Godot Engine
 
-We need make the animations Godot ready. If you are using a standard character model, such as from [Mixamo](https://www.mixamo.com), the import process is rather straight forward. However, if you are using a character from [Synty](https://syntystore.com/) we need to modify the key frames of the Hips bone. This is due to a slight difference between Explosive and Synty rigs. This will prevent the player from *floating* above the floor by the animations. To learn how to import Synty character models successfully please watch [Importing Synty Modular Fantasy Heroes into Godot 4 - YouTube](https://www.youtube.com/watch?v=nasSGwC6ef4) by Flyn.
-
-
+We need make the animations Godot ready. If you are using a standard character model, such as from [Mixamo](https://www.mixamo.com), the import process is rather straight forward. However, if you are using a character from [Synty](https://syntystore.com/) we need to modify the key frames of the Hips bone. This is due to a slight difference between Explosive and Synty rigs. This will prevent the player from *floating* above the floor by the animations. To learn how to import Synty character models please watch [Importing Synty Modular Fantasy Heroes into Godot 4 - YouTube](https://www.youtube.com/watch?v=nasSGwC6ef4) by Flyn.
 
 1. Import the GLB file, [explosive_bone_map.tres](https://github.com/scotmcp/explosive.ws-to-godot/blob/main/scripts/explosive_bone_map.tres "explosive_bone_map.tres") and the [explosive_anim_import.gd](https://github.com/scotmcp/explosive.ws-to-godot/blob/main/scripts/explosive_anim_import.gd "explosive_anim_import.gd") file to the project by dragging them into the Res:// filesystem frame.
 
@@ -73,7 +73,5 @@ We need make the animations Godot ready. If you are using a standard character m
    While making sure the GLB file is still selected, go back to the Import Tab and assign **explosive_anim_import.gd** as the import script, and click on **Reimport**.
 
 8. Verify the animation was imported correctly by adding the library to the animation player, testing each animation out.
-
-# 
 
 # Job Done !!
