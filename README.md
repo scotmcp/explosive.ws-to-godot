@@ -68,7 +68,7 @@ We need make the animations Godot ready. If you are using a standard character m
 
 6. Click on **Reimport** *Note: this step sometimes happens quickly, sometimes it takes a while. Be patient.*
 
-7. *If you are using a standard character model, such as from Mixamo, you can skip this step and go stright to step 8.*
+7. *If you are using a standard character model, such as from Mixamo, you can skip this step and go stright to step 8. This step is for Synty characters only.*
    
    While making sure the GLB file is still selected, go back to the Import Tab and assign **explosive_anim_import.gd** as the import script, and click on **Reimport**.
 
