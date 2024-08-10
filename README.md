@@ -56,7 +56,7 @@ The python script has been tested with blender 3.6 thru 4.2.
 
 *You must have a rigged and working character model to animate. You can try using the X-bot or Y-bot from [Mixamo](https://www.mixamo.com) or purchase some great looking character models from [Synty](https://syntystore.com/).*
 
-1. Import the GLB file, [explosive_bone_map.tres](https://github.com/scotmcp/explosive.ws-to-godot/blob/main/scripts/explosive_bone_map.tres "explosive_bone_map.tres") and the [explosive_bone_map.tres](https://github.com/scotmcp/explosive.ws-to-godot/blob/main/scripts/explosive_bone_map.tres "explosive_bone_map.tres") file to the project by dragging them into the Res:// filesystem frame.
+1. Import the GLB file, [explosive_bone_map.tres](https://github.com/scotmcp/explosive.ws-to-godot/blob/main/scripts/explosive_bone_map.tres "explosive_bone_map.tres") and the [explosive_anim_import.gd](https://github.com/scotmcp/explosive.ws-to-godot/blob/main/scripts/explosive_anim_import.gd "explosive_anim_import.gd") file to the project by dragging them into the Res:// filesystem frame.
 
 2. Select the GLB file in Godot FileSystem and open the Import tab above the Scene Tree.
 
