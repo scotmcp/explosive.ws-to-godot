@@ -20,7 +20,7 @@ You can also see a video walk-through of the process here: (**insert youtube lin
 
 # Explosive Animations
 
-###### Explosive animations currently supplies 1116 high quality RPG locomotion and combat animations *mostly ready* for Godot.
+##### Explosive animations currently supplies 1116 high quality RPG locomotion and combat animations *mostly ready* for Godot.
 
 The animations are supplied in a single zip file with animations organized into folders by equipped weapon (weapons are not included, these are just animations and rigging). The animations are not 100% ready to be used in godot, but following this easy workflow will make the animations ready to for animating player and non-player characters alike.
 
@@ -30,7 +30,7 @@ Animations are organized into folders named for the group of animations associat
 
 # Blender
 
-###### We are going to use blender to convert the FBX files into GLB files, which the Godot engine more readily recognizes and the engine processes the files faster.
+##### We are going to use blender to convert the FBX files into GLB files, which the Godot engine more readily recognizes and the engine processes the files faster.
 
 The python script has been tested with blender 3.6 thru 4.2.
 
@@ -54,9 +54,9 @@ The python script has been tested with blender 3.6 thru 4.2.
 
 # Godot Engine
 
-###### To make the animations Godot ready, we need to modify the key frames of the Hips bone. This will prevent the player from *floating* above the floor by the animations.
+##### To make the animations Godot ready, we need to modify the key frames of the Hips bone. This will prevent the player from *floating* above the floor by the animations.
 
-You must have a rigged and working character model to animate. You can try using the X-bot or Y-bot from [Mixamo](https://www.mixamo.com). [Synty](https://syntystore.com/) also has some great character models for purchase.
+*You must have a rigged and working character model to animate. You can try using the X-bot or Y-bot from [Mixamo](https://www.mixamo.com) or purchase some great looking character models from [Synty](https://syntystore.com/).*
 
 1. Import the GLB file, [explosive_bone_map.tres](https://github.com/scotmcp/explosive.ws-to-godot/blob/main/scripts/explosive_bone_map.tres "explosive_bone_map.tres") and the [explosive_bone_map.tres](https://github.com/scotmcp/explosive.ws-to-godot/blob/main/scripts/explosive_bone_map.tres "explosive_bone_map.tres") file to the project by dragging them into the Res:// filesystem frame.
 
