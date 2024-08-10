@@ -27,8 +27,13 @@ import bpy
 import os
 import math
 
-# Update this with the directory that contains the import folder
+
+# linux example path
 folder_path = "/home/scot/godot/Assets/Animations/ExplosiveLLC/RPG Animation FBX-0.0.6/Relax"
+
+# windows example path
+#folder_path =  "C:\\Users\\Scot\\Animations\\ExplosiveLLC\\RPG Animation FBX-0.0.0\\Relax"
+
 
 # Setup some variables
 rotate_z = True # rotate the animation by 180 on Z
