@@ -16,9 +16,6 @@ Scripts and skeleton resources to support the *mostly automated* explosive.ws to
 
 </p>
 
-
-
-
 You can also see a video walk-through of the process here: (**insert youtube link here**)
 
 # Explosive Animations
@@ -30,8 +27,6 @@ The animations are supplied in a single zip file with animations organized into 
 Download the zip file and extract the contents into a working folder.
 
 Animations are organized into folders named for the group of animations associated with the intended equipped weapon. Each animation is its own individual FBX file. You can leave them organized as is, or if you prefer to organize them differently is entirely up to you. Unless you have a specific need, it generally makes sense to just leave them as is. It will make working with them in the Godot Animation Player a little more organized and less of a headache.
-
-
 
 # Blender
 
@@ -55,10 +50,28 @@ The python script has been tested with blender 3.6 thru 4.2.
 
 8. Export the library by going to the File Menu > Export > gLTF
 
-9. Name the file as you wish (perhaps the same as the source folder name).
+9. Name the file as you wish (perhaps the same as the source folder name), and export the file with the default settings.
 
 # Godot Engine
 
+###### To make the animations Godot ready, we need to modify the key frames of the Hips bone. This will prevent the player from *floating* above the floor by the animations.
 
+You must have a rigged and working character model to animate. You can try using the X-bot or Y-bot from [Mixamo](https://www.mixamo.com). [Synty](https://syntystore.com/) also has some great character models for purchase.
 
-## 
+1. Import the GLB file, [explosive_bone_map.tres](https://github.com/scotmcp/explosive.ws-to-godot/blob/main/scripts/explosive_bone_map.tres "explosive_bone_map.tres") and the [explosive_bone_map.tres](https://github.com/scotmcp/explosive.ws-to-godot/blob/main/scripts/explosive_bone_map.tres "explosive_bone_map.tres") file to the project by dragging them into the Res:// filesystem frame.
+
+2. Select the GLB file in Godot FileSystem and open the Import tab above the Scene Tree.
+
+3. Change **Import As:** to Animation Library and click the **Reimport** button at the bottom of the frame. *Note: this step sometimes happens quickly, sometimes it takes a while. Be patient.*
+
+4. Click on **Advanced...** button.
+
+5. Select the Skeleton3D in the Scene Tree on the left, and in the inspector under **Retarget** assign the explosive_bone_map.tres as the skeleton.
+
+6. Click on **Reimport** *Note: this step sometimes happens quickly, sometimes it takes a while. Be patient.*
+
+7. Once importing is complete, go back to the Import Tab and assign **explosive_anim_import.gd** as the import script, and click on **Reimport**.
+
+8. Verify the animation was imported correctly by adding the library to the animation player, testing each animation out.
+
+# Job Done !!
