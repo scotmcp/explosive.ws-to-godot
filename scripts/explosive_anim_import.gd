@@ -12,56 +12,56 @@ extends EditorScenePostImport
 ## You can buy and download Explosive.ws animations for godot from:
 ## https://www.explosive.ws/products/rpg-animation-fbx-for-godot-blender
 
-var animation_player : AnimationPlayer
-var animation : Animation
+var resource = Resource.new()
 
-## ratio difference of leg length different between explosive.ws animation rigs and Synty humanoid rigs.
-## This ratio should be 0.115, but feel free to test and adjust as needed.
-var synty : bool = false
+var test : bool = true
+var animation_player : AnimationPlayer
+
+## ratio difference of leg length different between explosive.wss animation rigs and Synty humanoid rigs.
+## This ratio should be 0.115, but feel free to test and adjust as needed.s
+var synty : bool = true
 var keyframe_mod_ratio : float = 0.115
+
+var config = ConfigFile.new()
 
 
 ## Called right after the scene is imported and gets the root node and iterates through each animation in the library
 func _post_import(scene):
-	# Collection all animations into an array
-	
+	#set_skeleton() # return to this once bugs have been fixed in Godot https://github.com/godotengine/godot/issues/95461
 	for child in scene.get_children():
 		if child is AnimationPlayer:
 			animation_player = child
 			for anim_name in animation_player.get_animation_list():
 				var animation = animation_player.get_animation(anim_name)
 				iterate(animation, anim_name)
-	return scene # Remember to return the imported scene
-
+	print("*** Animation processing completed for All Animations ***")
+	return scene
+	
 func iterate(animation, anim_name) -> void:
 	if synty:
 		adjust_keyframes(animation, anim_name)
 	set_loop_mode(animation, anim_name)
 	print("Animation: " + str(anim_name) + " processing processing complete")
-	
 
+
+	
 ## Adjust the Hip bone placement so that it lines up with the Hip Bone on standard humanoid rigs.
 func adjust_keyframes(animation: Animation, anim_name) -> void:
+	print("Begin Keyframe Adjustments for :" + anim_name)
 	var track_index
 	#track_index = animation.find_track("Armature/Skeleton3D:B_Pelvis", Animation.TYPE_POSITION_3D)
 	track_index = animation.find_track("%GeneralSkeleton:Hips", Animation.TYPE_POSITION_3D)
 	var track_name = animation.track_get_path(track_index)
 	var keyframe_count = animation.track_get_key_count(track_index)
-	
-	#print("Animation Name: " + str(anim_name) + " Track Name: " + str(track_name) + " Track Number: " + \
-		 #str(track_index) + " Keyframe Count: " + str(keyframe_count))
-	
 	for i in range(keyframe_count):
 		var keyframe_time = animation.track_get_key_time(track_index, i)
 		var keyframe_value = animation.track_get_key_value(track_index, i)
-		
-		#if anim_name == "RelaxIdle":
-			#print("Original Keyframe Value: " + str(keyframe_value))
 		var keyframe_mod : float = keyframe_value.y * keyframe_mod_ratio
 		keyframe_value.y -= keyframe_mod
 		animation.track_set_key_value(track_index, i, keyframe_value)
-			#print("Modified Keyframe Value: " + str(keyframe_value))
-		print("Animation Keyframes adjusted")
+	print("Completed Keyframe Adjustments for :" + anim_name)
+		
+		
 ## Set linear loop mode animation names that contain:
 ## "idle", "fall", "loop", "run", "sprint", "strafe", "stunned", "walk"
 ## but not "Loop-Start" or "Loop-End"
@@ -83,8 +83,31 @@ func set_loop_mode(animation, anim_name) -> void:
 
 	# Notify the user that the process is complete
 	print("Animation loop mode update complete.")
-	pass
-	
-			
-			
 
+
+## return to this once bugs have been fixed in Godot https://github.com/godotengine/godot/issues/95461
+func set_skeleton() -> void:
+	print("*** Set BoneMap ***")
+	var bone_map : BoneMap = load("res://explosive_bone_map.tres")
+	var rest_pose : Animation = load("res://T-Pose.fbx")
+	var err : Error = config.load("res://relax.glb.import")
+	print(err)
+	print(config.get_value("params", "_subresources"))
+	
+	
+	var rest_pose_node : Dictionary = {"nodes" : {"PATH:Armature/Skeleton3D": {"rest_post/external_animation_library": null}}}
+	config.set_value("params", "_subresources", rest_pose_node)
+	
+	#var bone_map_node : Dictionary = {"nodes" : {"PATH:Armature/Skeleton3D": {"retarget/bone_map": bone_map}}}
+	#config.set_value("params", "_subresources", bone_map_node)
+	
+	config.save("res://relax.glb.import")
+	
+	##config.load("res://relax.glb.import")
+	
+	print("subresource = " + str(config.get_value("params", "_subresources")))
+	#print("nodes = " + str(bone_map_node))
+			
+	config.save("res://relax.glb.import.txt")
+	print("*** BoneMap Set Complete ***")
+	
