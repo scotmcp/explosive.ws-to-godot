@@ -26,7 +26,7 @@ The animations are supplied in a single zip file with animations organized into 
 
 Download the zip file and extract the contents into a working folder.
 
-Animations are organized into folders named for the group of animations associated with the intended equipped weapon. Each animation is its own individual FBX file. You can leave them organized as is, or if you prefer to organize them differently is entirely up to you. Unless you have a specific need, it generally makes sense to just leave them as is. It will make working with them in the Godot Animation Player a little more organized and less of a headache.
+Animations are organized into folders named for the group of animations associated with the intended equipped weapon. Each animation is its own individual FBX file. You can leave them organized as is, or if you prefer to organize them differently is entirely up to you. Unless you have a specific need, it generally makes sense to just leave them as is. It will make working with them in the Godot Animation Player a little more organized and less of a headache. Importing all the animations at once into Blender or Godot is not performant and prone to crashes, so it is recommended to do one folder at a time.
 
 # Blender
 
@@ -40,17 +40,21 @@ The python script has been tested with blender 3.6 thru 4.2.
 
 3. Copy and paste the contents of the explosive_anim_importer.py into the scripting editor in Blender
 
-4. Change the **folder_name** variable to the location of the folder holding the animations you wish to create your library from. *Note: If you are using Windows, please be sure to include the drive letter (ex. folder_path = "C:\users\yourname\animations\unarmed" )*
+4. Change the **folder_name** variable to the location of the folder holding the animations you wish to create your library from. *Note: If you are using Windows, please be sure to include the drive letter (ex. folder_path = "C:\users\yourname\animations\unarmed" )*.
 
 5. If you plan to use root motion, then change **remove_root_motion** variable to **False**. This option will strip the root motion tracks completely out of the animation, and you will have to repeat the process if you change your mind. *NOTE: If you are adding animations to your player through composition, root motion should probably be disabled*
 
-6. Press the Run Script Arrow button immediately above the script, wait a few moments until you see the Armature object in the inspector.
+6. Press the Run Script Arrow button immediately above the script, wait a few moments until you see the Armature object in the inspector. An armature for each animation will be imported.
 
 7. Open the Animation tab and switch the bottom frame from Dope Sheet to Action Editor and verify that each animation processed correctly.
 
-8. Export the library by going to the File Menu > Export > gLTF
+8. Select all the armatures except for one, right-click and "Delete Hierarchy". Exporting all the armatures into Godot can cause issues.
 
-9. Name the file as you wish (perhaps the same as the source folder name), and export the file with the default settings.
+9. Select the remaining armature and while in Object Mode, go to "Object" -> "Apply Rotation". Otherwise the character will be rotated incorrectly in Godot.
+
+10. Export the library by going to the File Menu > Export > gLTF
+
+11. Name the file as you wish (perhaps the same as the source folder name), and export the file with the default settings.
 
 # Godot Engine
 
@@ -68,8 +72,10 @@ We need make the animations Godot ready. If you are using a standard character m
 
 6. Click on **Reimport** *Note: this step sometimes happens quickly, sometimes it takes a while. Be patient.*
 
-7. If you are using the **Synty character models**, then open the script and change the synty variable to **synty = true**, otherwise check it and make sure it is set to **synty = false.** While making sure the GLB file is still selected, go back to the Import Tab and assign **explosive_anim_import.gd** as the import script, and click on **Reimport**.
+7. If you are using the **Synty character models**, then open the script and change the synty variable to **synty = true**, otherwise check it and make sure it is set to **synty = false.**
 
-8. Verify the animation was imported correctly by adding the library to the animation player, testing each animation out.
+8. While making sure the GLB file is still selected, go back to the Import Tab and assign **explosive_anim_import.gd** as the import script, and click on **Reimport**.
+
+9. Verify the animation was imported correctly by adding the library to the animation player, testing each animation out.
 
 # Job Done !!
