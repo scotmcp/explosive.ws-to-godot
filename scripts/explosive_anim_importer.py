@@ -69,7 +69,7 @@ else:
         file_path = os.path.join(folder_path, filename)
         print(file_path)
         # Import the file
-        bpy.ops.import_scene.fbx(filepath=file_path)
+        bpy.ops.import_scene.fbx(filepath=file_path, automatic_bone_orientation=True)
 
         # Look for weapon name and remove it
         for object in bpy.context.scene.objects:
