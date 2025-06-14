@@ -56,7 +56,7 @@ The python script has been tested with blender 3.6 thru 4.2.
 
 We need make the animations Godot ready. If you are using a standard character model, such as from [Mixamo](https://www.mixamo.com), the import process is rather straight forward. However, if you are using a character from [Synty](https://syntystore.com/) we need to modify the key frames of the Hips bone. This is due to a slight difference between Explosive and Synty rigs. This will prevent the player from *floating* above the floor by the animations. To learn how to import Synty character models please watch [Importing Synty Modular Fantasy Heroes into Godot 4 - YouTube](https://www.youtube.com/watch?v=nasSGwC6ef4) by Flyn.
 
-1. Import the GLB file, [explosive_bone_map.tres](https://github.com/scotmcp/explosive.ws-to-godot/blob/main/scripts/explosive_bone_map.tres "explosive_bone_map.tres") and the [explosive_anim_import.gd](https://github.com/scotmcp/explosive.ws-to-godot/blob/main/scripts/explosive_anim_import.gd "explosive_anim_import.gd") file to the project by dragging them into the Res:// filesystem frame.
+1. Import the GLB file, [explosive_bone_map.tres](https://github.com/scotmcp/explosive.ws-to-godot/blob/main/scripts/explosive_bone_map.tres "explosive_bone_map.tres") and the [explosive_anim_import.gd](https://github.com/scotmcp/explosive.ws-to-godot/blob/main/scripts/explosive_anim_import.gd "explosive_anim_import.gd") file to the project by dragging them into the Res:// filesystem frame. Note: ensure that this bone map is also assigned to the skeleton the character model you are using, otherwise the animation tracks may not resolve properly.
 
 2. Select the GLB file in Godot FileSystem and open the Import tab above the Scene Tree.
 
