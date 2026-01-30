@@ -26,7 +26,7 @@
 import bpy
 import os
 import math
-
+from bpy_extras import anim_utils
 
 # linux example path
 folder_path = "/home/scot/godot/Assets/Animations/ExplosiveLLC/RPG Animation FBX-0.0.6/Relax"
@@ -69,7 +69,7 @@ else:
         file_path = os.path.join(folder_path, filename)
         print(file_path)
         # Import the file
-        bpy.ops.import_scene.fbx(filepath=file_path, automatic_bone_orientation=True)
+        bpy.ops.wm.fbx_import(filepath=file_path)
 
         # Look for weapon name and remove it
         for object in bpy.context.scene.objects:
@@ -90,12 +90,18 @@ else:
         obj = bpy.context.selected_objects[0]
         if obj.animation_data:
             action = obj.animation_data.action
-            
-            # Remove root motion fcurves
+
             if remove_root_motion:
-                for fcurve in obj.animation_data.action.fcurves:
-                    if "Motion" in fcurve.data_path and "location" in fcurve.data_path:
-                            action.fcurves.remove(fcurve)
+                for slot in action.slots:
+                    channelbag = anim_utils.action_get_channelbag_for_slot(action, slot)
+                    if channelbag:
+                        fcurves_to_remove = [
+                            fc for fc in channelbag.fcurves
+                            if "Motion" in fc.data_path and "location" in fc.data_path
+                        ]
+                        for fc in fcurves_to_remove:
+                            channelbag.fcurves.remove(fc)
+
 
         if not action:
             print(f"Warning: '{filename}' doesn't contain an animation.")
