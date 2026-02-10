@@ -27,108 +27,67 @@ import bpy
 import os
 import math
 
-
-# linux example path
-folder_path = "/home/scot/godot/Assets/Animations/ExplosiveLLC/RPG Animation FBX-0.0.6/Relax"
-
-# windows example path
-#folder_path =  "C:\\Users\\Scot\\Animations\\ExplosiveLLC\\RPG Animation FBX-0.0.0\\Relax"
-
-
-# Setup some variables
-rotate_z = True # rotate the animation by 180 on Z
-remove_root_motion = True # remove the root motion location fcurves from animations, root rotation and root scale fcurves are not removed.
-
-remove_mesh = False # Experimental: remove the final mesh inside the armature that causes warnings in Godot
-weapon = "Crossbow"  # Name of weapon in case it exists in anim (it shouldn't)
-
-# Setup the environment
-collection = bpy.data.collections.get("Collection") # Starting Cube and it's Collection
-#bpy.ops.wm.read_factory_settings(use_empty=True) # Reset to default startup environment
-
+# --- Settings ---
+folder_path = "D:\\Assets\\RPG GLB\\Climbing-Ladder"
+rotate_z = True 
+remove_root_motion = True  # Set to True to stay in place, False to keep movement
+remove_mesh = False 
+weapon = "Crossbow"
 
 if not os.path.isdir(folder_path):
     print(f"Error: '{folder_path}' is not a valid directory.")
-
 else:
-
-    # Delete the starting cube and collection
-    if collection is not None:
-        # Iterate over all objects in the collection and unlink them
-        for obj in collection.objects:
-            bpy.data.objects.remove(obj, do_unlink=True)
-        
-        # Remove the collection itself
-        bpy.data.collections.remove(collection)
-        
-    # Search Folder for FBX files.
     for filename in os.listdir(folder_path):
         if not filename.endswith(".FBX"):
             continue
 
+        # 1. CLEAN THE SCENE
+        # Deleting everything ensures the next import is always "Armature" and "Motion"
+        bpy.ops.object.select_all(action='SELECT')
+        bpy.ops.object.delete() 
+        for block in bpy.data.actions:
+            if block.users == 0: bpy.data.actions.remove(block)
+
         file_path = os.path.join(folder_path, filename)
-        print(file_path)
-        # Import the file
-        bpy.ops.import_scene.fbx(filepath=file_path, automatic_bone_orientation=True)
+        
+        # 2. IMPORT
+        bpy.ops.import_scene.fbx(
+            filepath=file_path, 
+            automatic_bone_orientation=True,
+            use_prepost_rot=True 
+        )
 
-        # Look for weapon name and remove it
-        for object in bpy.context.scene.objects:
-            if object.name == weapon:
-                mesh_object = bpy.data.objects[weapon] 
-                
-                # Delete the mesh object.
-                bpy.data.objects.remove(mesh_object)
-                
-                # Get the action to delete.
-                action = bpy.data.actions[weapon + "|Take 001|BaseLayer"]
-                
-                # Delete the action.
-                bpy.data.actions.remove(action)
-
-        # Get the action
-        action = None
-        obj = bpy.context.selected_objects[0]
-        if obj.animation_data:
-            action = obj.animation_data.action
+        # 3. IDENTIFY ARMATURE AND ACTION
+        armature = bpy.data.objects.get("Armature")
+        
+        if armature and armature.animation_data and armature.animation_data.action:
+            action = armature.animation_data.action
             
-            # Remove root motion fcurves
+            # 4. REMOVE ROOT MOTION (If toggled)
             if remove_root_motion:
-                for fcurve in obj.animation_data.action.fcurves:
+                # We iterate backwards [:] to safely remove items while looping
+                for fcurve in action.fcurves[:]:
+                    # Target both 'Motion' bone data paths and Object-level 'Motion' paths
                     if "Motion" in fcurve.data_path and "location" in fcurve.data_path:
-                            action.fcurves.remove(fcurve)
+                        action.fcurves.remove(fcurve)
+                print(f"Root motion removed for {filename}")
 
-        if not action:
-            print(f"Warning: '{filename}' doesn't contain an animation.")
-            continue
+            # 5. ROTATION FIX
+            if rotate_z:
+                armature.rotation_euler[2] = math.radians(180)
+                # Apply rotation so the 'Motion' keys align with the new forward
+                bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
 
-        # Rename the action, this removes the first part of the file name so just the action is left
-        # Update "RPG-Character@Unarmed-" with the prefix to be removed
-        action.name = os.path.splitext(filename)[0].replace("RPG-Character@", "").replace("-", "")
+            # 6. RENAME ACTION
+            new_name = os.path.splitext(filename)[0].replace("RPG-Character@", "").replace("-", "")
+            action.name = new_name
+            action.use_fake_user = True
 
-        # Delete all but the first armature and first mesh
-        for object in bpy.context.scene.objects:
-            if object.name == "Armature.001" or object.name == "RPG-Character-Mesh.001":
-                bpy.data.objects.remove(object)
+        # 7. CLEANUP EXTRA OBJECTS
+        for obj in bpy.data.objects:
+            if weapon in obj.name or (remove_mesh and "Mesh" in obj.name):
+                bpy.data.objects.remove(obj, do_unlink=True)
 
-            # If True then delete final mesh
-            elif object.name == "RPG-Character-Mesh":
-                if remove_mesh == True:
-                    bpy.data.objects.remove(object)
-                
-
-        # Rotate the animation to face 180 degrees Z so it faces forward in godot
-        if rotate_z == True:
-            rot_obj = bpy.data.objects["Armature"]
-            rot_obj.select_set(True)
-            rot_obj.rotation_euler = [math.radians(90), 0.0, math.radians(180)]
-            bpy.context.view_layer.update()
-           
-
-        
-        print(f"Imported and renamed animation action for '{filename}' to '{action.name}'")
-        
-        
-    # Export File
-    #bpy.ops.export_scene.glb(filepath=export_file_path, export_selected=False)
+        print(f"Processed: {action.name}")
 
 print("Done!")
